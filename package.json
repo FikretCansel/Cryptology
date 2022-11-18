@@ -1,0 +1,40 @@
+{
+  "name": "cryptology-homework",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node src/app.ts",
+    "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "FikretCansel",
+  "license": "ISC",
+  "repository": {
+    "type": "git"
+  },
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "connect-mongodb-session": "^3.1.1",
+    "cookie-parser": "^1.4.6",
+    "crypto-js": "^4.1.1",
+    "express": "^4.18.1",
+    "express-session": "^1.17.3",
+    "express-validator": "^6.14.2",
+    "http-errors": "^2.0.0",
+    "mongodb": "^4.8.1",
+    "pug": "^3.0.2",
+    "socket.io": "^4.5.1"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/connect-mongodb-session": "^2.4.4",
+    "@types/cookie-parser": "^1.4.3",
+    "@types/crypto-js": "^4.1.1",
+    "@types/express": "^4.17.13",
+    "@types/express-session": "^1.17.5",
+    "@types/node": "^18.7.1",
+    "ts-node-dev": "2.0.0",
+    "typescript": "^4.7.4"
+  }
+}

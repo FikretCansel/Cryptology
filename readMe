@@ -1,0 +1,46 @@
+Fikret Cansel
+19253078
+
+
+Şimdi veri tabanını kuralım. Veri tabanı için MongoDb indirmeniz gerekmektedir.
+https://www.mongodb.com/try/download/community
+
+Veri tabanı arayüzü için yükleyebilirsiniz: 
+https://www.mongodb.com/products/compass
+
+Sonrasında Compass 'ı açınız ve Alcha adında veri tabanı(şifresiz) ve chats isminde collection oluşturunuz.
+
+#Çalıştırmak için öncelikli olarak node.js indirmeniz gerekmedir.
+İndirmek için : 
+    https://nodejs.org/en/
+
+indirdikten sonra projenin dosya konumunu terminalden açınız.Sonrasında aşağıdaki komutları yazınız:
+    npm install
+    npm start
+Tebrikler başarı ile çalıştırdınız.
+
+http://localhost:3000/ adresinden ulaşabilirsiniz.
+
+kullacı girişi için:
+	Kullanıcı adı : fikret
+	Şifre: fikret
+
+2. Versiyon özellikleri ile eklenenler - Mesajları AES standardı ile mesajlar şifrelenerek saklanmaktadır. Hatalar düzeltirmiştir.
+
+Keyler için mongo db veri tabanına secretKeys isminde döküman oluşturunuz.
+
+{
+    "_id": {
+        "$oid": "63774dddda043d2f82c0d8c1"
+    },
+    key:"secret key 123"    
+}
+içerisine dökümanını ekleyeniz.
+
+Uygulamada şifrelemede kullanılan key, dökümanın ilk sırasında olan keydir.
+Key kısmına istediginizi verebilirsiniz.
+
+
+Keyifli kullanımlar
+
+

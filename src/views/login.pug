@@ -1,0 +1,33 @@
+head
+  meta(charset='utf-8')
+  title Title2
+  link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css')
+
+  body
+    .modal-dialog
+        .modal-content
+          // Modal Header
+          .modal-header
+            button.close(type="button", data-dismiss="modal")
+              span(aria-hidden="true") ×
+              span.sr-only Close
+            h4#myModalLabel.modal-title
+              | Kriptoloji Giriş Paneli
+          // Modal Body
+          .modal-body
+            form(role='form' method='POST' action ='/users/login')
+                div.form-group
+                    label(for='text') Username:
+                    input#name.form-control(type='text', placeholder='username' name='username')
+                div.form-group
+                    label(for='password') Password:
+                    input#name.form-control(type='password', placeholder='password' name='password')
+                
+                button.btn.btn-primary(type="submit") Submit
+                #error
+                if error
+                    p.text-danger Hatalı Giriş!!!
+          // Modal Footer
+          .modal-footer
+
+    // footer

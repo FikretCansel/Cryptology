@@ -1,0 +1,3 @@
+interface chatGroups{
+    // getGroups();
+}
