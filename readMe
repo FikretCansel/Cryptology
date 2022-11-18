@@ -28,7 +28,7 @@ kullacı girişi için:
 2. Versiyon özellikleri ile eklenenler - Mesajları AES standardı ile mesajlar şifrelenerek saklanmaktadır. Hatalar düzeltirmiştir.
 
 Keyler için mongo db veri tabanına secretKeys isminde döküman oluşturunuz.
-
+Not : Keyler şimdilik veritabanında saklanmaktadır.
 {
     "_id": {
         "$oid": "63774dddda043d2f82c0d8c1"
