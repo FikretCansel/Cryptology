@@ -40,6 +40,19 @@ içerisine dökümanını ekleyeniz.
 Uygulamada şifrelemede kullanılan key, dökümanın ilk sırasında olan keydir.
 Key kısmına istediginizi verebilirsiniz.
 
+3. Versiyon Resim şifreleme :
+
+
+
+http://localhost:3000/ adresinden uygulamaya şifreniz ile giriş Yaptıktan sonra resim şifrelemek için :
+
+Encrypt Image buttonuna basınız. 
+Şifrelenmiş Resime ulaşmak için : http://localhost:3001/ adresine ,
+Şifrelenip Tekrar çözülmüş resime ulaşmak için http://localhost:3002/ adresine
+gidebilirsiniz. 
+
+(Şifrelenen metin readMe dosyanın olduğu klasörde yer almaktadır. ismi : image.jpg dir. Aynı isimde olacak şekilde istediğiniz resmi ekleyebilirsiniz)
+
 
 Keyifli kullanımlar
 
