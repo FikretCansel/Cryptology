@@ -9,6 +9,8 @@ import Message from "./models/chatGroups/Message";
 import { ObjectId, WithId } from "mongodb";
 import CryptoJS from "crypto-js";
 import fs from "fs";
+import crypto from "crypto";
+import bcrypt from "bcrypt";
 
 
 var bodyParser = require('body-parser');
@@ -33,8 +35,45 @@ app.use(cors({
 
 app.get('/', function(req:Request,res:Response,next:NextFunction) {
   let error = req.query.error || false;
+  console.log("Sılaş çalıştı")
   res.render('login', { error: error });
 });
+
+app.get('/signature',async function(req:Request,res:Response,next:NextFunction) {
+  const randomNumber=crypto.randomInt(1000000000,9999999999);
+  const genSalt = await bcrypt.genSalt();
+  let hashedNumber = await bcrypt.hash(randomNumber.toString(),genSalt);
+
+  let encrypyedHash = encryptText(hashedNumber);
+  
+  res.render('signature',{random:randomNumber,hashedNumber,encrypyedHash});
+});
+
+
+export function encryptText (plainText: string) {
+  return crypto.publicEncrypt({
+    key: fs.readFileSync('privateKey.txt', 'utf8'),
+    padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+    oaepHash: 'sha256'
+  },
+  // We convert the data string to a buffer
+  Buffer.from(plainText)
+  );
+}
+
+export function decryptText (encryptedText) {
+  return crypto.privateDecrypt(
+    {
+      key: fs.readFileSync('privateKey.txt', 'utf8'),
+      // In order to decrypt the data, we need to specify the
+      // same hashing function and padding scheme that we used to
+      // encrypt the data in the previous step
+      padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+      oaepHash: 'sha256'
+    },
+    encryptedText
+  );
+}
 
 app.get("/chat",async(req:Request,res:Response,next:NextFunction)=>{
   const userName = req.query.userName;
@@ -70,6 +109,7 @@ app.post('/users/login',(req:Request,res:Response,next:NextFunction)=> {
     res.redirect(`/chat?userName=${username}`);
   }else res.redirect("/?error=true");
 });
+
 
 app.post('/encrypt-image',async(req:Request,res:Response,next:NextFunction)=> {
   let userName="fikret";

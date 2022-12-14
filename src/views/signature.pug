@@ -1,0 +1,24 @@
+head
+  meta(charset='utf-8')
+  title Signature
+  link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css')
+
+  body
+    .modal-dialog
+        .modal-content
+          // Modal Header
+          .modal-header
+            button.close(type="button", data-dismiss="modal")
+              span(aria-hidden="true") ×
+              span.sr-only Close
+            h4#myModalLabel.modal-title
+              | İmzalama
+          // Modal Body
+          .modal-body
+            p Üretilen Rastgele Sayı :  #{random}
+            p Hash : #{hashedNumber}
+            p encrypyedHash : #{encrypyedHash}
+          // Modal Footer
+          .modal-footer
+
+    // footer
