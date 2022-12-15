@@ -2,7 +2,9 @@ import express, { NextFunction, Request, Response, Express } from "express";
 import { mongoConnect } from "./dataAccess/mongoDb/context/mongoAlchaContext";
 import http from "http";
 import {saveMessage,getChats} from "./dataAccess/mongoDb/moChatDal";
+import {saveHash,getHash} from "./dataAccess/mongoDb/moHashDal";
 import {getSecretKey} from "./dataAccess/mongoDb/moSecretKey";
+import {getPublicKey} from "./dataAccess/mongoDb/moPublicKey";
 import cors from "cors"
 import path from "path";
 import Message from "./models/chatGroups/Message";
@@ -40,19 +42,45 @@ app.get('/', function(req:Request,res:Response,next:NextFunction) {
 });
 
 app.get('/signature',async function(req:Request,res:Response,next:NextFunction) {
+  const result = req.query.result;
   const randomNumber=crypto.randomInt(1000000000,9999999999);
   const genSalt = await bcrypt.genSalt();
-  let hashedNumber = await bcrypt.hash(randomNumber.toString(),genSalt);
+  let hashedNumber = await (await bcrypt.hash(randomNumber.toString(),genSalt)).toString();
 
-  let encrypyedHash = encryptText(hashedNumber);
+  const publicKeyDoc = await getPublicKey();
+  const publicKey:string = publicKeyDoc?.key;
+  let encrypyedHash =await encryptText(hashedNumber,publicKey);
+  let hash= await saveHash(encrypyedHash.toString("base64"));
   
-  res.render('signature',{random:randomNumber,hashedNumber,encrypyedHash});
+  let decrypedHash= decryptText(encrypyedHash).toString();
+
+
+
+  
+  res.render('signature',{random:randomNumber,hashedNumber,encrypyedHash:encrypyedHash,decrypedHash,salt:genSalt,hashId:hash.insertedId,result});
+});
+
+app.post('/signature/control',async (req:Request,res:Response,next:NextFunction)=> {
+  const code = req.body.code;
+  const salt = req.body.salt;
+  let hashedNumber = await (await bcrypt.hash(code.toString(),salt)).toString();
+  let encryptedHash=await getHash(req.body.hashId);
+  const hashBuffer = Buffer.from(encryptedHash?.hash,"base64");
+
+
+  let decrypedHash= decryptText(hashBuffer).toString();
+  if(hashedNumber==decrypedHash){
+    console.log("dogru");
+    res.redirect(`/chat?userName=${"fikret"}&&result=false`);
+    return;
+  }
+  res.redirect(`/signature?result=false`);
 });
 
 
-export function encryptText (plainText: string) {
+export async function encryptText (plainText: string,publicKey:string) {
   return crypto.publicEncrypt({
-    key: fs.readFileSync('privateKey.txt', 'utf8'),
+    key: publicKey,
     padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
     oaepHash: 'sha256'
   },
@@ -64,10 +92,7 @@ export function encryptText (plainText: string) {
 export function decryptText (encryptedText) {
   return crypto.privateDecrypt(
     {
-      key: fs.readFileSync('privateKey.txt', 'utf8'),
-      // In order to decrypt the data, we need to specify the
-      // same hashing function and padding scheme that we used to
-      // encrypt the data in the previous step
+      key: fs.readFileSync('privateKey.pem', 'utf8'),
       padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
       oaepHash: 'sha256'
     },
@@ -106,7 +131,7 @@ app.post('/users/login',(req:Request,res:Response,next:NextFunction)=> {
   const username = req.body.username;
   const password = req.body.password;
   if(username==="fikret" && password==="fikret"){
-    res.redirect(`/chat?userName=${username}`);
+    res.redirect(`/signature`);
   }else res.redirect("/?error=true");
 });
 

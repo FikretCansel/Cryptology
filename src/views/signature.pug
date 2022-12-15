@@ -11,13 +11,26 @@ head
             button.close(type="button", data-dismiss="modal")
               span(aria-hidden="true") ×
               span.sr-only Close
+            #result
+              if result === "false"
+                p.text-danger  Dogrulama başarısız
             h4#myModalLabel.modal-title
               | İmzalama
           // Modal Body
           .modal-body
             p Üretilen Rastgele Sayı :  #{random}
             p Hash : #{hashedNumber}
-            p encrypyedHash : #{encrypyedHash}
+            p encrypyedBuffer : #{encrypyedHash}
+            p decodedHash: #{decrypedHash}
+            form(role='form' method='POST' action ='./signature/control')
+              input#name.form-control(type='text', placeholder='code' name='code')
+              label Salt
+              #salt
+              input#name.form-control(type='text', placeholder='salt' name='salt' value=salt)
+              label HashId
+              #hashId
+              input#name.form-control(type='text', placeholder='encrypyedHash' name='hashId' value=hashId)
+              button.btn.btn-primary(type="submit") Submit
           // Modal Footer
           .modal-footer
 
